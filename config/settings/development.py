@@ -2,10 +2,15 @@
 Development settings for opencare-africa project.
 """
 
+import secrets
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
+
+# Generate a secure secret key for development if not provided
+if not config('SECRET_KEY', default=None):
+    SECRET_KEY = secrets.token_urlsafe(50)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
 

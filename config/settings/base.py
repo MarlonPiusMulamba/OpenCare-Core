@@ -10,7 +10,13 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-in-production')
+SECRET_KEY = config('SECRET_KEY')
+
+# Validate that SECRET_KEY is set in production
+import sys
+if 'runserver' in sys.argv or 'gunicorn' in sys.argv:
+    if not SECRET_KEY or SECRET_KEY == 'django-insecure-change-in-production':
+        raise ValueError("SECRET_KEY must be set to a secure value in production!")
 
 # Application definition
 DJANGO_APPS = [

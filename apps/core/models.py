@@ -61,6 +61,12 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
+        indexes = [
+            models.Index(fields=['email']),
+            models.Index(fields=['user_type']),
+            models.Index(fields=['role']),
+            models.Index(fields=['date_of_birth']),
+        ]
     
     def __str__(self):
         return f"{self.get_full_name()} ({self.get_user_type_display()})"
@@ -104,6 +110,11 @@ class Location(models.Model):
         unique_together = ['name', 'parent', 'location_type']
         verbose_name = _('Location')
         verbose_name_plural = _('Locations')
+        indexes = [
+            models.Index(fields=['location_type']),
+            models.Index(fields=['parent']),
+            models.Index(fields=['name']),
+        ]
     
     def __str__(self):
         if self.parent:
@@ -150,6 +161,12 @@ class HealthFacility(models.Model):
     class Meta:
         verbose_name = _('Health Facility')
         verbose_name_plural = _('Health Facilities')
+        indexes = [
+            models.Index(fields=['facility_type']),
+            models.Index(fields=['location']),
+            models.Index(fields=['name']),
+            models.Index(fields=['created_at']),
+        ]
     
     def __str__(self):
         return f"{self.name} ({self.get_facility_type_display()})"
@@ -179,6 +196,13 @@ class AuditTrail(models.Model):
         verbose_name = _('Audit Trail')
         verbose_name_plural = _('Audit Trails')
         ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['action']),
+            models.Index(fields=['model_name']),
+            models.Index(fields=['timestamp']),
+            models.Index(fields=['-timestamp']),
+        ]
     
     def __str__(self):
         return f"{self.action} on {self.model_name} by {self.user} at {self.timestamp}"

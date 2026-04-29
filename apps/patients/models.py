@@ -93,6 +93,17 @@ class Patient(models.Model):
         verbose_name = _('Patient')
         verbose_name_plural = _('Patients')
         ordering = ['-registration_date']
+        indexes = [
+            models.Index(fields=['patient_id']),
+            models.Index(fields=['first_name']),
+            models.Index(fields=['last_name']),
+            models.Index(fields=['date_of_birth']),
+            models.Index(fields=['gender']),
+            models.Index(fields=['registered_facility']),
+            models.Index(fields=['registration_date']),
+            models.Index(fields=['-registration_date']),
+            models.Index(fields=['phone_number']),
+        ]
     
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.patient_id})"
@@ -160,6 +171,15 @@ class PatientVisit(models.Model):
         verbose_name = _('Patient Visit')
         verbose_name_plural = _('Patient Visits')
         ordering = ['-scheduled_date']
+        indexes = [
+            models.Index(fields=['patient']),
+            models.Index(fields=['facility']),
+            models.Index(fields=['visit_type']),
+            models.Index(fields=['status']),
+            models.Index(fields=['scheduled_date']),
+            models.Index(fields=['-scheduled_date']),
+            models.Index(fields=['attending_provider']),
+        ]
     
     def __str__(self):
         return f"{self.patient} - {self.get_visit_type_display()} at {self.facility}"
@@ -196,6 +216,15 @@ class PatientMedicalHistory(models.Model):
         verbose_name = _('Patient Medical History')
         verbose_name_plural = _('Patient Medical Histories')
         ordering = ['-diagnosis_date']
+        indexes = [
+            models.Index(fields=['patient']),
+            models.Index(fields=['condition']),
+            models.Index(fields=['diagnosis_date']),
+            models.Index(fields=['-diagnosis_date']),
+            models.Index(fields=['is_active']),
+            models.Index(fields=['severity']),
+            models.Index(fields=['facility']),
+        ]
     
     def __str__(self):
         return f"{self.patient} - {self.condition} ({self.diagnosis_date})"
